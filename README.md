@@ -38,6 +38,14 @@ Release:	19.04
 Codename:	disco
 ```
  
+##### Para instalar o pdfsig correto no Ubuntu 18.04 instalar o PPA do poppler correto, veja abaixo
+
+```
+sudo add-apt-repository -y ppa:cran/poppler
+sudo apt-get update
+sudo apt-get install -y libpoppler-cpp-dev
+```
+
 ### INSTALAÇÃO: 
 
 #### Faça o download dos arquivos
