@@ -1,13 +1,14 @@
-#!/bin/bash +x
+#!/bin/bash
 
 umask 0002
-
+MYCUSTOMTAB='     '
 readonly NC='\033[0m'
 readonly RED='\033[0;31m' 
 readonly DIR_SCRIPT=$(dirname "$0")
-readonly FMT_DATE="+%y%m%d%H%M%S"
+readonly FMT_DATE_OLD="+%Y%m%d%H%M%S"
+readonly FMT_DATE="+%d/%m/%Y-%H:%M:%S"
 readonly CMD_DATE="LC_ALL=pt_BR.utf8 date ${FMT_DATE}"
-readonly OUTPUT_DIR=~/pdfsigner-output
+readonly OUTPUT_DIR=/home/bgstudios/pdfsigner-output
   
 [ ! -d "${OUTPUT_DIR}" ] && mkdir -pv "${OUTPUT_DIR}"
 
@@ -155,7 +156,7 @@ function pfx_check {
 
 	if [ ${invalid_password} -gt 0 ]
 	then
-    json "falha" "${CERT}" "" "" "" "Senha incorreta" "${LOCALIZADOR}"
+    json "falha" "${CERT}" "" "" "" "Senha do certificado digital incorreta" "${LOCALIZADOR}"
 		return 2
 	fi
 
@@ -264,12 +265,12 @@ function json {
 	# Obrigatorio uso exclusivo de TABS 
   tee "${JSON}" <<-EOF
 	{
-		status: "${status}",
-		pathArquivoAssinado: "${pathArquivoAssinado}",
-		dataHoraAssinatura: "${dataHoraAssinatura}",
-		certificadoDocumento: "${certificadoDocumento}",
-		certificadoNome: "${certificadoNome}",
-		erroMensagem: "${erroMensagem}"
+		"status": "${status}",
+		"pathArquivoAssinado": "${pathArquivoAssinado}",
+		"dataHoraAssinatura": "${dataHoraAssinatura}",
+		"certificadoDocumento": "${certificadoDocumento}",
+		"certificadoNome": "${certificadoNome}",
+		"erroMensagem": "${erroMensagem}"
 	}
 	EOF
 }
