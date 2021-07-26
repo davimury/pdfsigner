@@ -65,7 +65,7 @@ Execute:
 
 ```
 cd /usr/local/bin
-git clone https://github.com/jonasrgoes/pdfsigner.git
+git clone https://github.com/gcarneiro/pdfsigner.git
 cd pdfsigner
 chmod +x pdfsigner
 ```
