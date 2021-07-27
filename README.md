@@ -73,7 +73,7 @@ chmod +x pdfsigner
 Após a instalação vamos criar um link simbolico para que qualquer usuário possa utilizar
 
 ```
-ln -s /usr/local/bin/xmlsigner/xmlsigner /usr/bin/xmlsigner
+ln -s /usr/local/bin/pdfsigner/pdfsigner /usr/bin/pdfsigner
 ```
 
 #### Se precisar compilar o script em Java execute:
