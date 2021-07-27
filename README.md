@@ -69,7 +69,13 @@ git clone https://github.com/gcarneiro/pdfsigner.git
 cd pdfsigner
 chmod +x pdfsigner
 ```
- 
+
+Após a instalação vamos criar um link simbolico para que qualquer usuário possa utilizar
+
+```
+ln -s /usr/local/bin/xmlsigner/xmlsigner /usr/bin/xmlsigner
+```
+
 #### Se precisar compilar o script em Java execute:
 
 ```
@@ -80,6 +86,8 @@ make
 ```
 
 #### Configurações
+
+Este passo já não é mais necessário em caso de criar o link simbólico
 
 No arquivo `/home/usuário/.bashrc` de cada usuário insira a linha:
 
