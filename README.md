@@ -1,4 +1,6 @@
-# Assinatura de PDF's com Certificado Digital PFX
+# Assinatura de PDF's com Certificado Digital PFX/P12
+
+Este projeto visa permitir a assinatura de arquivos PDFs a partir de certificados digitais eletrônicos dos tipos e-CPF e e-CNPJ.
 
 ### Verificar se o `java` está instalado
 
@@ -143,7 +145,3 @@ root@4800dcdfe3fd:~# pdfsigner -x /usr/local/bin/pdfsigner/certificado-bg-vencid
 Erro: Certificado inválido, expirado ou senha incorreta
 root@4800dcdfe3fd:~# 
 ```
-
-### SUPORTE
-
-`Whatsapp: (41) 99904-9150`
