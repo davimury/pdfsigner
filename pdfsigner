@@ -271,7 +271,7 @@ function json {
 		"status": "${status}",
 		"pathArquivoAssinado": "${pathArquivoAssinado}",
 		"dataHoraAssinatura": "${dataHoraAssinatura}",
-    "certificadoDescricao": "${certificadoDescricao}"
+    "certificadoDescricao": "${certificadoDescricao}",
 		"certificadoDocumento": "${certificadoDocumento}",
 		"certificadoNome": "${certificadoNome}",
 		"erroMensagem": "${erroMensagem}"
