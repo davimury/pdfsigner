@@ -198,7 +198,8 @@ function pfx_owner {
     exit 1
   fi
 
-  CN=`openssl pkcs12 -in "${CERT}" -passin pass:"${PASSWORD}" -clcerts -nokeys -out - | head -n 5 | grep 'CN =' | sed -n 1p`
+  CN=`openssl pkcs12 -in "${CERT}" -passin pass:"${PASSWORD}" -clcerts -nokeys -out - | grep 'CN =' | sed -n 1p`
+  echo ${CN}
   CN=`echo ${CN} | sed 's/"//g'`
 
   nome=`echo ${CN} | sed -E -n 's/.*CN = ([[:print:]]*):([0-9]*).*/\1/p'`
