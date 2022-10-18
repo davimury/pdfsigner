@@ -133,6 +133,14 @@ function pfx_check {
   PASSWORD="$2"
   LOCALIZADOR="$3"
   JSON="${OUTPUT_DIR}/${LOCALIZADOR}.json"
+  IS_LEGACY=0
+
+  ## Verifica a versão do openssl
+  openssl_version=$(dpkg --status openssl | grep ^Version | cut -d' ' -f2 | cut -d'-' -f1) 
+
+  dpkg --compare-versions $openssl_version 'lt' '3.0.0'; if [ $? -eq 0 ]; then
+    IS_LEGACY=1
+  fi
 
   if [ ! -s "${CERT}" ]
   then
@@ -152,15 +160,26 @@ function pfx_check {
     return 3
   fi
 
-	invalid_password=`openssl pkcs12 -in "${CERT}" -nokeys -legacy -passin pass:"${PASSWORD}" 2>&1 | fgrep -c invalid\ password`
-
+  if [ ${IS_LEGACY} -eq 1 ]
+  then
+    invalid_password=`openssl pkcs12 -in "${CERT}" -nokeys -passin pass:"${PASSWORD}" 2>&1 | fgrep -c invalid\ password`
+  else
+    invalid_password=`openssl pkcs12 -in "${CERT}" -nokeys -legacy -passin pass:"${PASSWORD}" 2>&1 | fgrep -c invalid\ password`
+  fi
+	
 	if [ ${invalid_password} -gt 0 ]
 	then
     json "falha" "${CERT}" "" "" "" "Senha do certificado digital incorreta" "${LOCALIZADOR}" ""
 		return 2
 	fi
 
-  expiration_date=`openssl pkcs12 -in "${CERT}" -nokeys -legacy -passin pass:"${PASSWORD}" | openssl x509 -noout -enddate | cut -d= -f2`
+  if [ ${IS_LEGACY} -eq 1 ]
+  then
+    expiration_date=`openssl pkcs12 -in "${CERT}" -nokeys -passin pass:"${PASSWORD}" | openssl x509 -noout -enddate | cut -d= -f2`
+  else
+    expiration_date=`openssl pkcs12 -in "${CERT}" -nokeys -legacy -passin pass:"${PASSWORD}" | openssl x509 -noout -enddate | cut -d= -f2`
+  fi
+
   expiration_date_ts=`date -d "${expiration_date}" +%s`
   current_ts=`date +%s`
 
@@ -185,6 +204,14 @@ function pfx_check {
 function pfx_owner {
   CERT="$1"
   PASSWORD="$2"
+  IS_LEGACY=0
+
+  ## Verifica a versão do openssl
+  openssl_version=$(dpkg --status openssl | grep ^Version | cut -d' ' -f2 | cut -d'-' -f1) 
+
+  dpkg --compare-versions $openssl_version 'lt' '3.0.0'; if [ $? -eq 0 ]; then
+    IS_LEGACY=1
+  fi
 
   if [ ! -s "${CERT}" ]
   then
@@ -198,7 +225,13 @@ function pfx_owner {
     exit 1
   fi
 
-  CN=`openssl pkcs12 -in "${CERT}" -passin pass:"${PASSWORD}" -clcerts -nokeys -legacy -out - | grep 'CN =' | sed -n 1p`
+  if [ ${IS_LEGACY} -eq 1 ]
+  then
+    CN=`openssl pkcs12 -in "${CERT}" -passin pass:"${PASSWORD}" -clcerts -nokeys -out - | grep 'CN =' | sed -n 1p`
+  else
+    CN=`openssl pkcs12 -in "${CERT}" -passin pass:"${PASSWORD}" -clcerts -nokeys -legacy -out - | grep 'CN =' | sed -n 1p`
+  fi
+  
   CN=`echo ${CN} | sed 's/"//g'`
 
   nome=`echo ${CN} | sed -E -n 's/.*CN = ([[:print:]]*):([0-9]*).*/\1/p'`
